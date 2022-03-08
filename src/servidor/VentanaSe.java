@@ -4,11 +4,21 @@
  */
 package servidor;
 
+import java.awt.GridLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 /**
  *
  * @author kevin
  */
 public class VentanaSe extends javax.swing.JFrame {
+    
+    private final String DEFAULT_PORT="10101";
+    private final Servidor servidor;
 
     /**
      * Creates new form VentanaSe
