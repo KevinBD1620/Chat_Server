@@ -4,7 +4,6 @@
  */
 package servidor;
 
-import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,16 +15,20 @@ import javax.swing.JTextField;
  * @author kevin
  */
 public class VentanaSe extends javax.swing.JFrame {
-    
     private final String DEFAULT_PORT="10101";
     private final Servidor servidor;
-
     /**
-     * Creates new form VentanaSe
+     * Creates new form Ventana
      */
     public VentanaSe() {
         initComponents();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        String puerto=getPuerto();
+        
     }
+        
+        
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -108,10 +111,18 @@ public class VentanaSe extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtClientes;
     // End of variables declaration//GEN-END:variables
+
+    private String getPuerto() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
