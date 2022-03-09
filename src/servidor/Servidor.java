@@ -20,6 +20,44 @@ public class Servidor extends Thread{
     LinkedList<Hilo_Cliente> clientes;
     
     
+    private final VentanaSe ventana;
+    
+    
+    private final String puerto;
+    
+    static int clienteS;
+    /**
+     * Constructor del servidor.
+     * @param puerto
+     * @param ventana 
+     */
+    public Servidor(String puerto, VentanaSe ventana) {
+        clienteS=0;
+        this.puerto=puerto;
+        this.ventana=ventana;
+        clientes=new LinkedList<>();
+        this.start();
+    }
+    
+    public void run(){
+        try {
+            serverSocket = new ServerSocket(Integer.valueOf(puerto));
+            ventana.addServidorIniciado();
+            while(true){
+                Hilo_Cliente h;
+                Socket socket;
+                socket = serverSocket.accept();
+                System.out.println("Nueva conexion entrante: "+socket);
+                h=new Hilo_Cliente(socket, this);               
+                h.start();
+                
+            }catch (Exception e)
+            
+        }
+    }
+    
+    
+    
     
     
     
