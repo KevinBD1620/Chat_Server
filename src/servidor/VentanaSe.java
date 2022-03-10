@@ -4,6 +4,7 @@
  */
 package servidor;
 
+import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,16 +16,16 @@ import javax.swing.JTextField;
  * @author kevin
  */
 public class VentanaSe extends javax.swing.JFrame {
-    private final String DEFAULT_PORT="10101";
+    private final String DEFAULT_PORT="10201";
     private final Servidor servidor;
     /**
      * Creates new form Ventana
      */
-    public VentanaSe() {
+   public VentanaSe() {
         initComponents();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         String puerto=getPuerto();
-        
+        servidor=new Servidor(puerto, this);
     }
         
         
@@ -41,15 +42,13 @@ public class VentanaSe extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         txtClientes = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         txtClientes.setColumns(20);
         txtClientes.setRows(5);
+        txtClientes.setText("Server Log");
         jScrollPane1.setViewportView(txtClientes);
-
-        jLabel1.setText("Login Servidor");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -57,21 +56,15 @@ public class VentanaSe extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(2, 2, 2)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -86,24 +79,7 @@ public class VentanaSe extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaSe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaSe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaSe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaSe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -117,12 +93,36 @@ public class VentanaSe extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea txtClientes;
     // End of variables declaration//GEN-END:variables
 
-    private String getPuerto() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    void newLog(String texto) {
+        txtClientes.append(texto);
+       
     }
+    
+    private String getPuerto() {
+        String p=DEFAULT_PORT;
+        JTextField puerto = new JTextField(20);
+        puerto.setText(p);
+        JPanel myPanel = new JPanel();
+        myPanel.setLayout(new GridLayout(2, 1));
+        myPanel.add(new JLabel("Puerto de la conexión:"));
+        myPanel.add(puerto);
+        int result = JOptionPane.showConfirmDialog(null, myPanel, 
+                 "Configuracion", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+                p=puerto.getText();
+        }else{
+            System.exit(0);
+        }
+        return p;
+    }
+    
+    void ServerOn() {
+        txtClientes.setText("Iniciando conexion...");
+    }      
+    
+        
 }
