@@ -24,10 +24,6 @@ public class VentanaCl extends javax.swing.JFrame {
         String ip=ip_puerto_nombre[0];
         String puerto=ip_puerto_nombre[1];
         String nombre=ip_puerto_nombre[2];
-
-        /**
-         * falta declarar puerto en la clase cliente
-         */
         cliente=new Chat_Cliente(this, ip, Integer.valueOf(puerto), nombre);
     }
 
@@ -49,14 +45,14 @@ public class VentanaCl extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtHistorial.setBackground(new java.awt.Color(204, 255, 204));
+        txtHistorial.setBackground(new java.awt.Color(153, 255, 204));
         txtHistorial.setColumns(20);
         txtHistorial.setRows(5);
         jScrollPane2.setViewportView(txtHistorial);
 
         jLabel2.setText("Contactos");
 
-        cmbContactos.setBackground(new java.awt.Color(0, 255, 153));
+        cmbContactos.setBackground(new java.awt.Color(255, 255, 0));
         cmbContactos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbContactosActionPerformed(evt);
@@ -121,24 +117,24 @@ public class VentanaCl extends javax.swing.JFrame {
     private void cmbContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbContactosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbContactosActionPerformed
-
+    
+    
     private void txtMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMensajeActionPerformed
         // TODO add your handling code here:
         
     }//GEN-LAST:event_txtMensajeActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        if(cmbContactos.getSelectedItem()==null){
-            JOptionPane.showMessageDialog(this,"Debe seleccionar un contacto valido");
-            
-            return;
+      if(cmbContactos.getSelectedItem()==null){
+            JOptionPane.showMessageDialog(this, "Seleccione un contacto");
         }
         String cliente_receptor=cmbContactos.getSelectedItem().toString();
         String mensaje=txtMensaje.getText();
         cliente.enviarMensaje(cliente_receptor, mensaje);
-        txtHistorial.append("## Yo -> "+cliente_receptor+ " ## : \n" + mensaje+"\n");
-        txtMensaje.setText("");
-        
+        //se agrega en el historial de la conversación lo que el cliente ha dicho
+        txtHistorial.append("== Yo -> "+cliente_receptor+ "  : \n" + mensaje+"\n");
+        txtMensaje.setText("");                        
+       
     }//GEN-LAST:event_btnEnviarActionPerformed
    
     /**
@@ -186,9 +182,9 @@ public class VentanaCl extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     
-    private final String DEFAULT_PORT = "10201";
+    private final String DEFAULT_PORT="10201";
     
-    private final String DEFAULT_IP = "127,0,0,1";
+    private final String DEFAULT_IP="127.0.0.1";
     
     private final Chat_Cliente cliente;
     
@@ -197,7 +193,7 @@ public class VentanaCl extends javax.swing.JFrame {
     }
     
     void addMensaje(String emisor, String mensaje) {
-        txtHistorial.append("##### "+emisor + " ##### : \n" + mensaje+"\n");
+        txtHistorial.append("---> "+emisor + "  : \n" + mensaje+"\n");
     }
     
     void sesionIniciada(String ID) {

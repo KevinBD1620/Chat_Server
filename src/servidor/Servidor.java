@@ -67,18 +67,16 @@ public class Servidor extends Thread{
                 Hilo_Cliente h;
                 Socket socket;
                 socket = serverSocket.accept();
-                System.out.println("Nuevo Usuario: "+socket);
+                System.out.println("Nueva conexion entrante: "+socket);
                 h=new Hilo_Cliente(socket, this);               
                 h.start();
-                
             }
-            
-        }catch (Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(ventana, "Error al iniciar el servidor,\n"
-                                                 + "Compruebe que el puerto sea el correcto.");
+                                                 + "Compruebe que el puerto sea el correcto.\n");
             System.exit(0);
         }                
-    }    
+    }        
     /**
      *Este ciclo retorna la lista con los ID de todos los clientes conectados
      * @return 

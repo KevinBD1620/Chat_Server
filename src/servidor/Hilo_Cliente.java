@@ -64,6 +64,17 @@ public class Hilo_Cliente extends Thread{
     /**
      * Aca es donde se sobreescribe el metodo Thread, en ciclo infinito
      */
+    
+    public void desconectar() {
+        try {
+            socket.close();
+            Receptor=false;
+        } catch (IOException ex) {
+            System.err.println("Error al cerrar el socket de comunicación con el cliente.");
+        }
+    }
+    
+    
     public void run() {
         try{
             escuchar(); 
@@ -76,15 +87,7 @@ public class Hilo_Cliente extends Thread{
     /**
      * Metodo encargado de cerrar el socket al finalizar la comunicacion
      */        
-    public void desconectar() {
-        try {
-            socket.close();
-            Receptor=false;
-            
-        }catch (IOException ex) {
-            System.err.println("Error al cortar la comunicacion con el usuario");
-        }
-    }       
+     
     /**
      * Este metodo esta constantemente reciviendo la informacion del cliente con el que 
      * se esta comunicando
@@ -112,13 +115,13 @@ public class Hilo_Cliente extends Thread{
     public void exe(LinkedList<String> lista){
         String tipo = lista.get(0);
         switch (tipo) {
-            case "Solicitud_Con":
+            case "SOLICITUD_CONEXION":
                 SetCon(lista.get(1));
                 break;
-            case "SOLICITUD_DISCON":
+            case "SOLICITUD_DESCONEXION":
                 SetDiscon();
                 break;
-            case "MSJ":
+            case "MENSAJE":
                 String destinatario = lista.get(2);
                 server.clientes
                         .stream()
@@ -156,14 +159,14 @@ public class Hilo_Cliente extends Thread{
      */
     private void SetCon(String ID) {
         Servidor.ClienteS++;
-        this.ID = Servidor.ClienteS+" _ "+ID;
+        this.ID=Servidor.ClienteS+" - "+ID;
         LinkedList<String> lista=new LinkedList<>();
-        lista.add("CONEXION_COMPLETADA");
+        lista.add("CONEXION_ACEPTADA");
         lista.add(this.ID);
         lista.addAll(server.getUsers());
         enviarMensaje(lista);
         server.newLog("\nNuevo Usuario: "+this.ID);
-        //Se envia el nombre del nuevo usuario a todos los uduarios, menos a el mismo
+        //enviar a todos los clientes el nombre del nuevo usuario conectado excepto a él mismo
         LinkedList<String> auxLista=new LinkedList<>();
         auxLista.add("NUEVO_USUARIO_CONECTADO");
         auxLista.add(this.ID);
@@ -178,26 +181,21 @@ public class Hilo_Cliente extends Thread{
      * cuando uno de los clientes se ha desconectado.
      */
      private void SetDiscon() {
-         LinkedList<String> auxLista=new LinkedList<>();
-         auxLista.add("USUARIO_DESCONECTADO");
-         auxLista.add(this.ID);
-         server.newLog("\nEl usuario \""+this.ID+"\" se ha desconectado.");
-         this.desconectar();
-         for (int i=0;i<server.clientes.size();i++){
-             if (server.clientes.get(i).equals(this)) {
-                 server.clientes.remove(i) ;
-                 break;
-             }
-         }
-         server.clientes
-                 .stream()
-                 .forEach(h -> h.enviarMensaje(auxLista));
-         
-     }
-    
-
-   
-
-    
-    
+        LinkedList<String> auxLista=new LinkedList<>();
+        auxLista.add("USUARIO_DESCONECTADO");
+        auxLista.add(this.ID);
+        server.newLog("\nEl cliente \""+this.ID+"\" se ha desconectado.");
+        this.desconectar();
+        for(int i=0;i<server.clientes.size();i++){
+            if(server.clientes.get(i).equals(this)){
+                server.clientes.remove(i);
+                break;
+            }
+        }
+        server.clientes
+                .stream()
+                .forEach(h -> h.enviarMensaje(auxLista));        
+    }
 }
+    
+
