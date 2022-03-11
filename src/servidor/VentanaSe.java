@@ -1,6 +1,8 @@
 
 package servidor;
-
+/**
+ * Imports requeridos por esta clase
+ */
 import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -9,7 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
- *
+ * Esta clase se encarga de gestionar todo lo relacionado con la interfaz grafica del servidor
+ * Se muestra un historial de las conexines y desconexiones de los clientes.
+ * Y se muestra un mensaje cuando el servidor esta corriendo de forma adecuada
  * @author kevin
  */
 public class VentanaSe extends javax.swing.JFrame {
@@ -106,11 +110,20 @@ public class VentanaSe extends javax.swing.JFrame {
     private javax.swing.JTextArea txtClientes;
     // End of variables declaration//GEN-END:variables
 
+    
+    /**
+     * Agrega una linea de texto al log
+     * @param texto 
+     */
     void newLog(String texto) {
         txtClientes.append(texto);
        
     }
-    
+    /**
+     * Metodo que despliega una ventana para que el usuario ingrese 
+     * el puerto que quiere utilizar para comunicarce con el servidor
+     * @return 
+     */
     private String getPuerto() {
         String p=DEFAULT_PORT;
         JTextField puerto = new JTextField(20);
@@ -129,6 +142,9 @@ public class VentanaSe extends javax.swing.JFrame {
         return p;
     }
     
+    /**
+     * Este metodo notifica cuando el eervidor se inicia correctamente.
+     */
     void ServerOn() {
         txtClientes.setText("Iniciando conexion...");
     }      
