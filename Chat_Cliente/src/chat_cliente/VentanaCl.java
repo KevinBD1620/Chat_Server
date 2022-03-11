@@ -22,7 +22,9 @@ public class VentanaCl extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         String ip_puerto_nombre[]=getIP_Puerto_Nombre();
         String ip=ip_puerto_nombre[0];
+        String puerto=ip_puerto_nombre[1];
         String nombre=ip_puerto_nombre[2];
+
         /**
          * falta declarar puerto en la clase cliente
          */
@@ -39,7 +41,7 @@ public class VentanaCl extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtHistorial = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         cmbContactos = new javax.swing.JComboBox();
         txtMensaje = new javax.swing.JTextField();
@@ -47,10 +49,10 @@ public class VentanaCl extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextArea1.setBackground(new java.awt.Color(204, 255, 204));
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtHistorial.setBackground(new java.awt.Color(204, 255, 204));
+        txtHistorial.setColumns(20);
+        txtHistorial.setRows(5);
+        jScrollPane2.setViewportView(txtHistorial);
 
         jLabel2.setText("Contactos");
 
@@ -80,26 +82,29 @@ public class VentanaCl extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbContactos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbContactos, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbContactos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -107,7 +112,7 @@ public class VentanaCl extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEnviar))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -119,12 +124,23 @@ public class VentanaCl extends javax.swing.JFrame {
 
     private void txtMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMensajeActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtMensajeActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        // TODO add your handling code here:
+        if(cmbContactos.getSelectedItem()==null){
+            JOptionPane.showMessageDialog(this,"Debe seleccionar un contacto valido");
+            
+            return;
+        }
+        String cliente_receptor=cmbContactos.getSelectedItem().toString();
+        String mensaje=txtMensaje.getText();
+        cliente.enviarMensaje(cliente_receptor, mensaje);
+        txtHistorial.append("## Yo -> "+cliente_receptor+ " ## : \n" + mensaje+"\n");
+        txtMensaje.setText("");
+        
     }//GEN-LAST:event_btnEnviarActionPerformed
-
+   
     /**
      * @param args the command line arguments
      */
@@ -165,7 +181,7 @@ public class VentanaCl extends javax.swing.JFrame {
     private javax.swing.JComboBox cmbContactos;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea txtHistorial;
     private javax.swing.JTextField txtMensaje;
     // End of variables declaration//GEN-END:variables
     
@@ -175,13 +191,66 @@ public class VentanaCl extends javax.swing.JFrame {
     private final String DEFAULT_IP = "127,0,0,1";
     
     private final Chat_Cliente cliente;
+    
+    void addContacto(String contacto) {
+        cmbContactos.addItem(contacto);
+    }
+    
+    void addMensaje(String emisor, String mensaje) {
+        txtHistorial.append("##### "+emisor + " ##### : \n" + mensaje+"\n");
+    }
+    
+    void sesionIniciada(String ID) {
+        this.setTitle(" --- "+ID+" --- ");
+    }
+        
+        
 
     private String[] getIP_Puerto_Nombre() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String s[]=new String[3];
+        s[0]=DEFAULT_IP;
+        s[1]=DEFAULT_PORT;
+        JTextField ip = new JTextField(20);
+        JTextField puerto = new JTextField(20);
+        JTextField usuario = new JTextField(20);
+        ip.setText(DEFAULT_IP);
+        puerto.setText(DEFAULT_PORT);
+        usuario.setText("Usuario");
+        JPanel myPanel = new JPanel();
+        myPanel.setLayout(new GridLayout(3, 2));
+        myPanel.add(new JLabel("IP del Servidor:"));
+        myPanel.add(ip);
+        myPanel.add(new JLabel("Puerto:"));
+        myPanel.add(puerto);
+        myPanel.add(new JLabel("Ingrese un nick:"));
+        myPanel.add(usuario); 
+        int result = JOptionPane.showConfirmDialog(null, myPanel, 
+                 "Configuracion", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+                s[0]=ip.getText();
+                s[1]=puerto.getText();
+                s[2]=usuario.getText();
+        }else{
+            System.exit(0);
+        }
+        return s;
+    }    
+    
+        
+    
+    
+    void eliminarContacto(String ID) {
+        for (int i = 0; i < cmbContactos.getItemCount(); i++) {
+            if(cmbContactos.getItemAt(i).toString().equals(ID)){
+                cmbContactos.removeItemAt(i);
+                return;
+            }
+        }
     }
+}
     
 
 
 
-}
+
 
