@@ -1,28 +1,66 @@
 
-package chat_cliente;
+/**
+ * Parte de la aplicacion de Chat que se encarga de los clientes
+ */
 
+package chat_cliente;
+/**
+ * Imports requeridos
+ */
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 /**
- *
+ *Clase en la que se gestiona la comunicacion del cliente
  * @author kevin
  */
 public class Chat_Cliente extends Thread {
+    /**
+     * Socket para la comunicacion con el servidor
+     */
     private Socket socket;
+    /**
+     * Stream para el envio de obj al server
+     */
     private ObjectOutputStream objectOutputStream;
+    /**
+     * Stream para la interaccion con el servidor
+     */
     private ObjectInputStream objectInputStream;
+    /**
+     * Ventana utilizada para la interfaz grafica
+     */
     private final VentanaCl ventana;
+    /**
+     * Identificador unico de cada cliente
+     */
     private String ID;
+    /**
+     * Variable que determina si el cliente se comunica o NO
+     * con el servidor
+     */
     private boolean escuchando;
+    /**
+     * Variable que almacena la ip host
+     */
     private final String host;
+    /**
+     * Variable que almacena el puerto
+     */
     private final int puerto;
     
     
-
     
+    
+    /**
+     * Conmstructor de la clase Chat_Cliente
+     * @param ventana
+     * @param host
+     * @param puerto
+     * @param nombre 
+     */
 
     Chat_Cliente(VentanaCl ventana, String host, Integer puerto, String nombre) {
         this.ventana=ventana;        
@@ -32,7 +70,9 @@ public class Chat_Cliente extends Thread {
         escuchando=true;
         this.start();
     }
-    
+    /**
+     * Metodo que corre el hilo de la comunicacion del lado cliente
+     */
     public void run(){
         try {
             socket=new Socket(host, puerto);
@@ -52,7 +92,9 @@ public class Chat_Cliente extends Thread {
         }
 
     }
-    
+    /**
+     * Metodo que cierra el socket y los streams
+     */
     public void desconectar(){
         try {
             objectOutputStream.close();
@@ -64,7 +106,11 @@ public class Chat_Cliente extends Thread {
         }
     }
     
-    
+    /**
+     * Metodo que envia notificaciones al servidor
+     * @param cliente_receptor
+     * @param mensaje 
+     */
 
     public void enviarMensaje(String cliente_receptor, String mensaje) {
         LinkedList<String> lista=new LinkedList<>();       
@@ -78,7 +124,9 @@ public class Chat_Cliente extends Thread {
             System.out.println("Error");
         }
     }
-
+    /**
+     * Metodo que recive constantemente la info del servidor
+     */
     public void escuchar() {
        try {
             while (escuchando) {
@@ -102,7 +150,10 @@ public class Chat_Cliente extends Thread {
     }
                     
                    
-
+    /**
+     * Metodo que ejecuta una serie de comandos dependiendo de lo que el cliente reciba 
+     * @param lista 
+     */
     public void exe(LinkedList<String> lista) {
          // 0 - El primer elemento de la lista es siempre el tipo
         String tipo=lista.get(0);
@@ -135,7 +186,11 @@ public class Chat_Cliente extends Thread {
     }
     
         
-        
+     /**
+      * Este metodo envia una solicitud para que el servidor lo agregue
+      * a la lista de clientes
+      * @param ID 
+      */   
     private void enviarSolicitudConexion(String ID) {
         LinkedList<String> lista=new LinkedList<>();
         lista.add("SOLICITUD_CONEXION");
@@ -151,7 +206,10 @@ public class Chat_Cliente extends Thread {
     
     
     
-    
+    /**
+     * Metodo que retorna el ID del cliente en el chat
+     * @return 
+     */
     String getID() {
         return ID;
     }

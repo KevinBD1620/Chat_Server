@@ -1,9 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package chat_cliente;
 
+package chat_cliente;
+/**
+ * Imports requeridos
+ */
 import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,11 +10,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
+/**
+ * Clase que maneja la interfaz grafica del cliente
+ * @author kevin
+ */
 public class VentanaCl extends javax.swing.JFrame {
 
     /**
-     * Creates new form VentanaCl
+     * Constructor de la ventana
      */
     public VentanaCl() {
         initComponents();
@@ -45,8 +47,10 @@ public class VentanaCl extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtHistorial.setBackground(new java.awt.Color(153, 255, 204));
+        txtHistorial.setBackground(new java.awt.Color(0, 0, 0));
         txtHistorial.setColumns(20);
+        txtHistorial.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        txtHistorial.setForeground(new java.awt.Color(255, 255, 255));
         txtHistorial.setRows(5);
         jScrollPane2.setViewportView(txtHistorial);
 
@@ -123,15 +127,19 @@ public class VentanaCl extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_txtMensajeActionPerformed
-
+    /**
+     * Boton de enviar
+     * @param evt 
+     */
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-      if(cmbContactos.getSelectedItem()==null){
+        //Si no hay contactos o clientes conectados
+        if(cmbContactos.getSelectedItem()==null){
             JOptionPane.showMessageDialog(this, "Seleccione un contacto");
         }
         String cliente_receptor=cmbContactos.getSelectedItem().toString();
         String mensaje=txtMensaje.getText();
         cliente.enviarMensaje(cliente_receptor, mensaje);
-        //se agrega en el historial de la conversación lo que el cliente ha dicho
+        //se agrega en el historial de la conversación lo que el cliente ha enviado
         txtHistorial.append("== Yo -> "+cliente_receptor+ "  : \n" + mensaje+"\n");
         txtMensaje.setText("");                        
        
@@ -181,27 +189,48 @@ public class VentanaCl extends javax.swing.JFrame {
     private javax.swing.JTextField txtMensaje;
     // End of variables declaration//GEN-END:variables
     
-    
+    /**
+     * Constante que almacena el puerto default 
+     */
     private final String DEFAULT_PORT="10201";
-    
+    /**
+     * Constante que almacena la IP por defecto 
+     */
     private final String DEFAULT_IP="127.0.0.1";
-    
+    /**
+     * Constante que almacena el cliente que se esta comunicando
+     * con el servidor
+     */
     private final Chat_Cliente cliente;
-    
+    /**
+     * Agrega los contactos nuevos al JComboBoz
+     * @param contacto 
+     */
     void addContacto(String contacto) {
         cmbContactos.addItem(contacto);
     }
-    
+    /**
+     * Agrega los mensajes nuevos en el historial
+     * @param emisor
+     * @param mensaje 
+     */
     void addMensaje(String emisor, String mensaje) {
         txtHistorial.append("---> "+emisor + "  : \n" + mensaje+"\n");
     }
-    
+    /**
+     * Se configura el nombre del usuario en la nueva ventana del cliente
+     * @param ID 
+     */
     void sesionIniciada(String ID) {
         this.setTitle(" --- "+ID+" --- ");
     }
         
         
-
+    /**
+     * Metodo en el que el usuario ingresa la IP, puerto y un nick
+     * con los cuales ingresar al chat
+     * @return 
+     */
     private String[] getIP_Puerto_Nombre() {
         String s[]=new String[3];
         s[0]=DEFAULT_IP;
@@ -234,7 +263,16 @@ public class VentanaCl extends javax.swing.JFrame {
     
         
     
+    /**
+     * 
+     * @param ID 
+     */
     
+    /**
+     * Este metodo elimina los usuarios al momento de desconectarce
+     * NO FUNCIONA DE MOMENTO
+     * @param ID 
+     */
     void eliminarContacto(String ID) {
         for (int i = 0; i < cmbContactos.getItemCount(); i++) {
             if(cmbContactos.getItemAt(i).toString().equals(ID)){
