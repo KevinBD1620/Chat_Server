@@ -16,6 +16,8 @@ import javax.swing.JTextField;
  */
 public class VentanaCl extends javax.swing.JFrame {
 
+
+
     /**
      * Constructor de la ventana
      */
@@ -26,6 +28,7 @@ public class VentanaCl extends javax.swing.JFrame {
         String ip=ip_puerto_nombre[0];
         String puerto=ip_puerto_nombre[1];
         String nombre=ip_puerto_nombre[2];
+        
         cliente=new Chat_Cliente(this, ip, Integer.valueOf(puerto), nombre);
     }
 
@@ -241,14 +244,17 @@ public class VentanaCl extends javax.swing.JFrame {
         ip.setText(DEFAULT_IP);
         puerto.setText(DEFAULT_PORT);
         usuario.setText("Usuario");
+        
         JPanel myPanel = new JPanel();
-        myPanel.setLayout(new GridLayout(3, 2));
+        myPanel.setLayout(new GridLayout(4, 2));
         myPanel.add(new JLabel("IP del Servidor:"));
         myPanel.add(ip);
         myPanel.add(new JLabel("Puerto:"));
         myPanel.add(puerto);
         myPanel.add(new JLabel("Ingrese un nick:"));
         myPanel.add(usuario); 
+        
+        
         int result = JOptionPane.showConfirmDialog(null, myPanel, 
                  "Configuracion", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {

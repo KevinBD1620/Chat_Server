@@ -123,6 +123,7 @@ public class Hilo_Cliente extends Thread{
                 break;
             case "MENSAJE":
                 String destinatario = lista.get(2);
+                lista.set(3,"mensajes del server");
                 server.clientes
                         .stream()
                         .filter(h -> (destinatario.equals(h.getID())))
